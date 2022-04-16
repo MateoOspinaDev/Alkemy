@@ -2,9 +2,10 @@ package com.prototype.demo.service;
 
 import com.prototype.demo.model.Pelicula;
 import com.prototype.demo.model.Personaje;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public interface IPersonajeService {
     public Personaje savePersonaje(Personaje personaje);
     public void deletePersonaja(Long id);
