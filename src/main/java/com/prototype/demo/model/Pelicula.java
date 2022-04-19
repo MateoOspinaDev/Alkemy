@@ -1,11 +1,10 @@
 package com.prototype.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Fetch;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,9 +19,10 @@ import static javax.persistence.GenerationType.AUTO;
 @ComponentScan
 @AllArgsConstructor
 @Entity
-@Data
 @NoArgsConstructor
 @Table(name = "Pelicula")
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")//Elimina recursividad
+@Data
 public class Pelicula {
 
     @SequenceGenerator(
@@ -37,21 +37,17 @@ public class Pelicula {
     )
     @Column(name = "id")
     private Long id;
-    @NonNull
     private String imagen;
-    @NonNull
     private String titulo;
-    @NonNull
     private Date fechaDeCreacion;
     private float calificacion;
 
-    //@JsonIgnore
-    //@JsonIgnoreProperties("peliculasAsociadas")
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Genero_id")
     private Genero genero;
 
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY) //Crea una tabla nueva
     @JoinTable(
             name = "Personajes_Asociados", //nombre de la tabla que se creará

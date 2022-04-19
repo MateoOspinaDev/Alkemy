@@ -23,18 +23,20 @@ public class PersonajeController {
 
     @GetMapping
     public ResponseEntity<List<PersonajeSinDetalles>> obtenerPersonajes(){
+        if(iPersonajeService.getPersonajesSinDetalles().isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         return ResponseEntity.ok().body(iPersonajeService.getPersonajesSinDetalles());
     }
 
     @GetMapping("/details")
     public ResponseEntity<List<Personaje>> obtenerPersonajesConDetalles(){
+        if(iPersonajeService.getPersonajes().isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         return ResponseEntity.ok().body(iPersonajeService.getPersonajes());
     }
 
     @GetMapping(params = "name")
     public ResponseEntity<PersonajeSinDetalles> obtenerPersonajePorNombre(@RequestParam("name") String name){
         if(!iPersonajeService.existByNombre(name)){
-            throw new PersonajeNotFoundException(HttpStatus.NO_CONTENT,"EC-003","personaje no existe o parametro de busqueda incorrecto");
+            throw new PersonajeNotFoundException(HttpStatus.BAD_REQUEST,"EC-003","personaje no existe o parametro de busqueda incorrecto");
         }
         return ResponseEntity.ok().body(iPersonajeService.getPersonajeByNombre(name));
     }
@@ -51,7 +53,7 @@ public class PersonajeController {
     @GetMapping(params = "peso")
     public ResponseEntity<List<PersonajeSinDetalles>> obtenerPersonajesPorpeso(@RequestParam("peso") float peso){
         if(!iPersonajeService.existByPeso(peso)){
-            throw new PersonajeNotFoundException(HttpStatus.NO_CONTENT,"EC-003","personaje no existe o parametro de busqueda incorrecto");
+            throw new PersonajeNotFoundException(HttpStatus.BAD_REQUEST,"EC-003","personaje no existe o parametro de busqueda incorrecto");
         }
         return ResponseEntity.ok().body(iPersonajeService.getPersonajeByPeso(peso));
     }
@@ -62,6 +64,7 @@ public class PersonajeController {
     public ResponseEntity<List<PersonajeSinDetalles>> obtenerPersonajesPorIdMovie(@RequestParam("movies") Long movies){
         return ResponseEntity.status(HttpStatus.CREATED).body(iPersonajeService.getPersonajesSinDetalles());
     }
+    ///************Por hacer/////********
 
 
 
@@ -80,7 +83,7 @@ public class PersonajeController {
     @PutMapping
     public ResponseEntity<Personaje> editarPersonaje ( @RequestBody Personaje personaje){
         if(!iPersonajeService.existById(personaje.getId())){
-            throw new PersonajeNotFoundException(HttpStatus.NO_CONTENT,"EC-005","personaje a editar no existe");
+            throw new PersonajeNotFoundException(HttpStatus.BAD_REQUEST,"EC-005","personaje a editar no existe");
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(iPersonajeService.updatePersonaje(personaje));
     }
@@ -90,10 +93,11 @@ public class PersonajeController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> borrarPersonaje(@PathVariable ("id") Long id){
         if(!iPersonajeService.existById(id)){
-            throw new PersonajeNotFoundException(HttpStatus.NO_CONTENT,"EC-003","personaje no existe o parametro de busqueda incorrecto");
+            throw new PersonajeNotFoundException(HttpStatus.BAD_REQUEST,"EC-003","personaje no existe o parametro de busqueda incorrecto");
         }
         iPersonajeService.deletePersonaje(id);
         return ResponseEntity.ok().build();
     }
+
 
 }

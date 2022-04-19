@@ -41,7 +41,7 @@ public class Genero {
     private String nombre;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "genero",cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "genero", fetch=FetchType.LAZY)
     //Si fetchType está en Eager, no permite que las peliculas se elimines
     private Collection<Pelicula> peliculasAsociadas = new ArrayList();
 

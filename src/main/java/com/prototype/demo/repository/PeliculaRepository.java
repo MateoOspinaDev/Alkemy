@@ -14,9 +14,10 @@ import java.util.List;
 @Repository
 public interface PeliculaRepository extends JpaRepository<Pelicula,Long> {
 
+    boolean existsByTitulo(String titulo);
+
     @Query(value = "SELECT * FROM pelicula u WHERE  u.titulo = :titulo",nativeQuery = true)
     Pelicula findByTitulo(@Param("titulo") String titulo);
-
 
     @Query(value ="SELECT * FROM pelicula u WHERE  u.genero_id = ?1", nativeQuery = true)
     List<Pelicula> findByGeneroId(Long generoId);

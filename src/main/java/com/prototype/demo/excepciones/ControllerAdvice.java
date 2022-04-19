@@ -20,6 +20,12 @@ public class ControllerAdvice {
         return new ResponseEntity<>(error, ex.getHttpStatus());
     }
 
+    @ExceptionHandler(value = PeliculaNotFoundException.class)
+    public ResponseEntity<ErrorP> PeliculaNotFoundExceptionHandler(PeliculaNotFoundException ex){
+        ErrorP error = ErrorP.builder().code(ex.getCode()).message(ex.getMessage()).build();
+        return new ResponseEntity<>(error, ex.getHttpStatus());
+    }
+
 //    @ExceptionHandler(value = BusinessException.class)
 //    public ResponseEntity<ErrorP> businessExceptionHandler(BusinessException ex){
 //        ErrorP error = ErrorP.builder().code(ex.getCode()).message(ex.getMessage()).build();
