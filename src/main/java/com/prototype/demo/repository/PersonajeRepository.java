@@ -26,4 +26,9 @@ public interface PersonajeRepository extends JpaRepository<Personaje,Long> {
     @Query(value ="UPDATE personaje u set imagen=?1,nombre=?2,edad=?1,peso=?3,historia=?4  where u.id = ?5 ", nativeQuery = true)
     void updatePersonaje(String imagen, String nombre, int edad, float peso, String historia, Long id);
 
+    boolean existsByNombre(String nombre);
+
+    boolean existsByEdad(int edad);
+
+    boolean existsByPeso(float peso);
 }

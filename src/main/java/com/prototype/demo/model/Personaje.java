@@ -31,13 +31,9 @@ public class Personaje {
             generator = "personaje_sequence"
     )
     private Long id;
-    @NonNull
     private String imagen;
-    @NonNull
     private String nombre;
-    @NonNull
     private int edad;
-    @NonNull
     private float peso;
     private String historia;
 

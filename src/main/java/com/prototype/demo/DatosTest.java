@@ -28,7 +28,7 @@ public class DatosTest {
         }
 
         public static Personaje crearPersonaje003() {
-            return (new Personaje(1L, "Santiago jpg", "Santiago", 36, 75f,
+            return (new Personaje(1L, "Santiago jpg", "Santiago", 36, 56f,
                     "Nacido...", new ArrayList<Pelicula>() {
             }));
         }

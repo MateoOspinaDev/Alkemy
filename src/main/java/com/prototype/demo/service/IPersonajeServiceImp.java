@@ -23,6 +23,16 @@ public class IPersonajeServiceImp implements IPersonajeService {
     }
 
     @Override
+    public boolean existByNombre(String nombre) {
+        return personajeRepository.existsByNombre(nombre);
+    }
+
+    @Override
+    public boolean existByEdad(int edad) {
+        return personajeRepository.existsByEdad(edad);
+    }
+
+    @Override
     public Personaje savePersonaje(Personaje personaje) {
 
         return personajeRepository.save(personaje);
@@ -73,5 +83,10 @@ public class IPersonajeServiceImp implements IPersonajeService {
     @Override
     public List<Personaje> getPersonajeByIdPelicula(Long idPelicula) {
         return null;
+    }
+
+    @Override
+    public boolean existByPeso(float peso) {
+        return personajeRepository.existsByPeso(peso);
     }
 }

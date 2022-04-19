@@ -16,7 +16,11 @@ public interface IPersonajeService {
     public List<Personaje> getPersonajeByPeso(float peso);
     public List<Personaje> GetPersonajeByEdad(int edad);
     public List<Personaje> getPersonajes();
+    public boolean existByNombre(String nombre);
+    public boolean existByEdad(int edad);
 
     //********************Por hacer//////*********
     public List<Personaje> getPersonajeByIdPelicula(Long idPelicula);
+
+    boolean existByPeso(float peso);
 }
