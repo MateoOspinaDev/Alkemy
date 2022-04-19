@@ -2,12 +2,14 @@ package com.prototype.demo.service;
 
 import com.prototype.demo.model.Pelicula;
 import com.prototype.demo.model.Personaje;
+import com.prototype.demo.model.PersonajeSinDetalles;
 import com.prototype.demo.repository.PersonajeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,7 +20,7 @@ public class IPersonajeServiceImp implements IPersonajeService {
     private PersonajeRepository personajeRepository;
 
     @Override
-    public List<Personaje> getPersonajes(){
+    public List<Personaje> getPersonajes() {
         return personajeRepository.findAll();
     }
 
@@ -34,13 +36,24 @@ public class IPersonajeServiceImp implements IPersonajeService {
 
     @Override
     public Personaje savePersonaje(Personaje personaje) {
-
         return personajeRepository.save(personaje);
     }
 
     @Override
-    public void deletePersonaja(Long id) {
+    public boolean existByPeso(float peso) {
+        return personajeRepository.existsByPeso(peso);
+    }
+
+    @Override
+    public void deletePersonaje(Long id) {
+
         personajeRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean existById(Long id) {
+
+        return personajeRepository.existsById(id);
     }
 
     @Override
@@ -53,40 +66,43 @@ public class IPersonajeServiceImp implements IPersonajeService {
     }
 
     @Override
-    public Personaje getDetalles(String nombre) {
-        return null;
+    public PersonajeSinDetalles getPersonajeByNombre(String nombre) {
+        Personaje personaje = personajeRepository.findByNombre(nombre);
+        return new PersonajeSinDetalles(personaje.getImagen(), personaje.getNombre());
     }
 
     @Override
-    public boolean existById(Long id) {
-        return personajeRepository.existsById(id);
+    public List<PersonajeSinDetalles> getPersonajeByPeso(float peso) {
+        List<Personaje> personajes = personajeRepository.findByPeso(peso);
+        List<PersonajeSinDetalles> personajeSinDetalles = new ArrayList<>();
+        personajes.forEach(personaje -> personajeSinDetalles.add(
+                new PersonajeSinDetalles(personaje.getImagen(), personaje.getNombre())));
+        return personajeSinDetalles;
     }
 
     @Override
-    public Personaje getPersonajeByNombre(String nombre) {
-        return personajeRepository.findByNombre(nombre);
+    public List<PersonajeSinDetalles> GetPersonajeByEdad(int edad) {
+        List<Personaje> personajes = personajeRepository.findByEdad(edad);
+        List<PersonajeSinDetalles> personajeSinDetalles = new ArrayList<>();
+        personajes.forEach(personaje -> personajeSinDetalles.add(
+                new PersonajeSinDetalles(personaje.getImagen(), personaje.getNombre())));
+        return personajeSinDetalles;
     }
 
     @Override
-    public List<Personaje> getPersonajeByPeso(float peso) {
-        return personajeRepository.findByPeso(peso);
-    }
+    public List<PersonajeSinDetalles> getPersonajesSinDetalles(){
 
-    @Override
-    public List<Personaje> GetPersonajeByEdad(int edad) {
-        return personajeRepository.findByEdad(edad);
+        List<Personaje> personajes = personajeRepository.findAll();
+        List<PersonajeSinDetalles> personajeSinDetalles = new ArrayList<>();
+        personajes.forEach(personaje -> personajeSinDetalles.add(
+                new PersonajeSinDetalles(personaje.getImagen(), personaje.getNombre())));
+        return personajeSinDetalles;
     }
-
 
 
     //********************Por hacer//////*********
     @Override
     public List<Personaje> getPersonajeByIdPelicula(Long idPelicula) {
         return null;
-    }
-
-    @Override
-    public boolean existByPeso(float peso) {
-        return personajeRepository.existsByPeso(peso);
     }
 }

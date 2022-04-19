@@ -12,6 +12,10 @@ import java.util.List;
 @Repository
 public interface PersonajeRepository extends JpaRepository<Personaje,Long> {
 
+    boolean existsByNombre(String nombre);
+    boolean existsByEdad(int edad);
+    boolean existsByPeso(float peso);
+
     @Query(value ="SELECT * FROM personaje u WHERE  u.nombre = :nombre",nativeQuery = true)
     Personaje findByNombre(@Param("nombre") String nombre);
 
@@ -21,14 +25,8 @@ public interface PersonajeRepository extends JpaRepository<Personaje,Long> {
     @Query(value ="SELECT * FROM personaje u WHERE  u.peso = ?1", nativeQuery = true)
     List<Personaje> findByPeso(float peso);
 
-
     @Modifying
     @Query(value ="UPDATE personaje u set imagen=?1,nombre=?2,edad=?1,peso=?3,historia=?4  where u.id = ?5 ", nativeQuery = true)
     void updatePersonaje(String imagen, String nombre, int edad, float peso, String historia, Long id);
 
-    boolean existsByNombre(String nombre);
-
-    boolean existsByEdad(int edad);
-
-    boolean existsByPeso(float peso);
 }

@@ -1,8 +1,6 @@
 package com.prototype.demo;
 
-import com.prototype.demo.model.Genero;
-import com.prototype.demo.model.Pelicula;
-import com.prototype.demo.model.Personaje;
+import com.prototype.demo.model.*;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -47,6 +45,14 @@ public class DatosTest {
             personajes.add(crearPersonaje002());
             personajes.add(crearPersonaje003());
             return  personajes;
+        }
+
+        public static List<PersonajeSinDetalles> personajeSinDetalles(){
+            List<Personaje> personajes = listarPersonajes();
+            List<PersonajeSinDetalles> personajeSinDetalles = new ArrayList<>();
+            personajes.forEach(personaje -> personajeSinDetalles.add(
+                    new PersonajeSinDetalles(personaje.getImagen(), personaje.getNombre())));
+            return personajeSinDetalles;
         }
     }
 

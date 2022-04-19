@@ -11,13 +11,13 @@ public class ControllerAdvice {
     @ExceptionHandler(value = RequestException.class)
     public ResponseEntity<ErrorP> requestExceptionHandler(RequestException ex){
         ErrorP error = ErrorP.builder().code(ex.getCode()).message(ex.getMessage()).build();
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, ex.getHttpStatus());
     }
 
     @ExceptionHandler(value = PersonajeNotFoundException.class)
     public ResponseEntity<ErrorP> PersonajeNotFoundExceptionHandler(PersonajeNotFoundException ex){
         ErrorP error = ErrorP.builder().code(ex.getCode()).message(ex.getMessage()).build();
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(error, ex.getHttpStatus());
     }
 
 //    @ExceptionHandler(value = BusinessException.class)
