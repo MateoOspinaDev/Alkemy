@@ -45,7 +45,7 @@ public class PersonajeController {
     @GetMapping(params = "age")
     public ResponseEntity<List<PersonajeSinDetalles>> obtenerPersonajesPorEdad(@RequestParam("age") int age){
         if(!iPersonajeService.existByEdad(age)){
-            throw new PersonajeNotFoundException(HttpStatus.NO_CONTENT,"EC-003","personaje no existe o parametro de busqueda incorrecto");
+            throw new PersonajeNotFoundException(HttpStatus.BAD_REQUEST,"EC-003","personaje no existe o parametro de busqueda incorrecto");
         }
         return ResponseEntity.ok().body(iPersonajeService.GetPersonajeByEdad(age));
     }

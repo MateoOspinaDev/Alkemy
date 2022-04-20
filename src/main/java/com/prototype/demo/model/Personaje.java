@@ -17,8 +17,7 @@ import static javax.persistence.GenerationType.AUTO;
 @AllArgsConstructor
 @Table(name = "Personaje")
 @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
-@Getter
-@Setter
+@Data
 public class Personaje {
 
     @SequenceGenerator(

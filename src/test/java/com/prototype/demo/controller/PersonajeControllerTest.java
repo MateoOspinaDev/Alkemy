@@ -65,7 +65,7 @@ class PersonajeControllerTest {
                 .andExpect(jsonPath("$[0].nombre").value("Mateo"))
                 .andExpect(jsonPath("$[1].nombre").value("Adriana"));
 
-        verify(iPersonajeService).getPersonajes();
+        verify(iPersonajeService,times(2)).getPersonajes();
     }
 
     @WithMockUser
@@ -134,7 +134,7 @@ class PersonajeControllerTest {
         when(iPersonajeService.existById(1L)).thenReturn(false);
 
         mockMvc.perform(delete("/characters/1").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("personaje no existe o parametro de busqueda incorrecto"));
     }
 
@@ -177,15 +177,15 @@ class PersonajeControllerTest {
         when(iPersonajeService.existByPeso(anyFloat())).thenReturn(false);
 
         mockMvc.perform(get("/characters?name=Adriana").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("personaje no existe o parametro de busqueda incorrecto"));
 
         mockMvc.perform(get("/characters?age=25").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("personaje no existe o parametro de busqueda incorrecto"));
 
         mockMvc.perform(get("/characters?peso=55").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("personaje no existe o parametro de busqueda incorrecto"));
     }
 
