@@ -23,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class UsuarioServiceImp implements UsuarioService, UserDetailsService {
+public class IUsuarioServiceImp implements IUsuarioService, UserDetailsService {
     @Autowired
     private final UsuarioRepository usuarioRepository;
 
@@ -81,5 +81,10 @@ public class UsuarioServiceImp implements UsuarioService, UserDetailsService {
     public List<Usuario> getUsuarios() {
         //log.info("Fetching all users");
         return usuarioRepository.findAll();
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return usuarioRepository.existsByUsername(username);
     }
 }

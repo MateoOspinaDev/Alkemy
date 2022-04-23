@@ -1,6 +1,5 @@
 package com.prototype.demo.service;
 
-import com.prototype.demo.model.Pelicula;
 import com.prototype.demo.model.Personaje;
 import com.prototype.demo.model.PersonajeSinDetalles;
 import org.springframework.stereotype.Service;

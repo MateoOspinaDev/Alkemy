@@ -6,6 +6,7 @@ import com.prototype.demo.excepciones.RequestException;
 import com.prototype.demo.model.Pelicula;
 import com.prototype.demo.model.PeliculaSinDetalles;
 import com.prototype.demo.service.IPeliculaService;
+import com.prototype.demo.service.IPersonajeService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,8 @@ public class PeliculaController {
     @Autowired
     private IPeliculaService iPeliculaService;
 
+    @Autowired
+    private IPersonajeService iPersonajeService;
 
     @GetMapping("/details")
     public ResponseEntity<List<Pelicula>> obtenerPeliculas(){
@@ -34,27 +37,6 @@ public class PeliculaController {
     public ResponseEntity<List<PeliculaSinDetalles>> obtenerPeliculasSinDetalles(){
         if(iPeliculaService.getPeliculasSinDetalles().isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         return ResponseEntity.ok().body(iPeliculaService.getPeliculasSinDetalles());
-    }
-
-    @GetMapping(params = "titulo")
-    public ResponseEntity<PeliculaSinDetalles> obtenerPeliculaPorTitulo(@RequestParam("titulo") String titulo){
-        if(!iPeliculaService.existByTitulo(titulo)){
-            throw new PeliculaNotFoundException(HttpStatus.BAD_REQUEST,"EC-003","pelicula no existe o parametro de busqueda incorrecto");
-        }
-        return ResponseEntity.ok().body(iPeliculaService.getByTitulo(titulo));
-    }
-
-    @GetMapping(params = "genre")
-    public ResponseEntity<List<PeliculaSinDetalles>> obtenerPeliculaPorGenero(@RequestParam("genre") Long genre){
-        return ResponseEntity.ok().body(iPeliculaService.findByIdGenero(genre));
-    }
-
-    @GetMapping(params = "order")
-    public ResponseEntity<List<PeliculaSinDetalles>> obtenerPeliculasAsc(@RequestParam("order") String order){
-        if(!Objects.equals(order, "asc") && !Objects.equals(order, "desc")){
-            throw new RequestException(HttpStatus.BAD_REQUEST,"EM-001","Orden ingresado no es valido");
-        }
-        return ResponseEntity.ok().body(iPeliculaService.getOrderByDate(order));
     }
 
 
@@ -80,14 +62,41 @@ public class PeliculaController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity borrarPelicula(@PathVariable Long id){
         if(!iPeliculaService.existById(id)){
-            throw new PeliculaNotFoundException(HttpStatus.BAD_REQUEST,"EC-003","pelicula  no existe");
+            throw new PeliculaNotFoundException(HttpStatus.BAD_REQUEST,"EC-003","pelicula no existe");
         }
         iPeliculaService.deletePelicula(id);
         return ResponseEntity.ok(!iPeliculaService.existById(id));
     }
 
+    @GetMapping(params = "titulo")
+    public ResponseEntity<PeliculaSinDetalles> obtenerPeliculaPorTitulo(@RequestParam("titulo") String titulo){
+        if(!iPeliculaService.existByTitulo(titulo)){
+            throw new PeliculaNotFoundException(HttpStatus.BAD_REQUEST,"EC-003","pelicula no existe o parametro de busqueda incorrecto");
+        }
+        return ResponseEntity.ok().body(iPeliculaService.getByTitulo(titulo));
+    }
+
+    @GetMapping(params = "genre")
+    public ResponseEntity<List<PeliculaSinDetalles>> obtenerPeliculaPorGenero(@RequestParam("genre") Long genre){
+        return ResponseEntity.ok().body(iPeliculaService.findByIdGenero(genre));
+    }
+
+    @GetMapping(params = "order")
+    public ResponseEntity<List<PeliculaSinDetalles>> obtenerPeliculasAsc(@RequestParam("order") String order){
+        if(!Objects.equals(order, "asc") && !Objects.equals(order, "desc")){
+            throw new RequestException(HttpStatus.BAD_REQUEST,"EM-001","Orden ingresado no es valido");
+        }
+        return ResponseEntity.ok().body(iPeliculaService.getOrderByDate(order));
+    }
+
     @PostMapping(value="/{idPelicula}/characters/{idPersonaje}")
     public ResponseEntity<?> agregarPersonajeAPelicula(@PathVariable Long idPelicula,@PathVariable Long idPersonaje){
+        if(!iPeliculaService.existById(idPelicula)){
+            throw new PeliculaNotFoundException(HttpStatus.BAD_REQUEST,"EC-003","pelicula no existe o id incorrecto");
+        }
+        if(!iPersonajeService.existById(idPersonaje)){
+            throw new PersonajeNotFoundException(HttpStatus.BAD_REQUEST,"EC-003","personaje no existe o id incorrecto");
+        }
         iPeliculaService.addPersonajeToPelicula(idPelicula,idPersonaje);
         return ResponseEntity.ok().build();
     }
