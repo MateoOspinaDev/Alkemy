@@ -3,7 +3,7 @@
 
 Desarrollo de una API que permite crear, conocer y modifcar entidades de personajes, peliculas y generos. También permite agregar y quitar personajes de peliculas. Además permite navegar por estos personajes y sus películas y se expone la información para que cualquier frontend pueda consumirla.
 
-**Documentación**:La documentación de los endpoints fueron realizados con Postman y pueden ser vistos en este enlace: 
+**Documentación**:La documentación de los endpoints fueron realizados con Postman y pueden ser vistos en este enlace: https://documenter.getpostman.com/view/17448776/UVysxbYp
 ### Especificaciones técnicas:
 - Realizado con SpringBoot siguiendo el patrón REST.
 - Modelado de base de datos con MySQL.
