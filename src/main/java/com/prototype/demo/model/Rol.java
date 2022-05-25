@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import static javax.persistence.GenerationType.AUTO;
 
 @Entity
 @Data
@@ -25,5 +24,5 @@ public class Rol {
             generator = "rol_sequence"
     )
     private Long id;
-    private String nombre;
+    private String name;
 }

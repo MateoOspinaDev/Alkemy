@@ -8,19 +8,19 @@ import java.util.List;
 @Service
 public interface IPersonajeService {
 
-    public Personaje savePersonaje(Personaje personaje);
-    public void deletePersonaje(Long id);
-    public Personaje updatePersonaje(Personaje personaje);
-    public boolean existById(Long id);
-    public PersonajeSinDetalles getPersonajeByNombre(String nombre);
-    public List<PersonajeSinDetalles> getPersonajeByPeso(float peso);
-    public List<PersonajeSinDetalles> GetPersonajeByEdad(int edad);
-    public List<PersonajeSinDetalles> getPersonajesSinDetalles();
-    public List<Personaje> getPersonajes();
-    public boolean existByNombre(String nombre);
-    public boolean existByEdad(int edad);
+    Personaje savePersonaje(Personaje personaje);
+    void deletePersonaje(Long id);
+    Personaje updatePersonaje(Personaje personaje);
+    boolean existById(Long id);
+    PersonajeSinDetalles getPersonajeByNombre(String nombre);
+    List<PersonajeSinDetalles> getPersonajeByPeso(float peso);
+    List<PersonajeSinDetalles> GetPersonajeByEdad(int edad);
+    List<PersonajeSinDetalles> getPersonajesSinDetalles();
+    List<Personaje> getPersonajes();
+    boolean existByNombre(String nombre);
+    boolean existByEdad(int edad);
     boolean existByPeso(float peso);
 
     //********************Por hacer//////*********
-    public List<Personaje> getPersonajeByIdPelicula(Long idPelicula);
+    public List<PersonajeSinDetalles> getPersonajeByIdPelicula(Long idPelicula);
 }

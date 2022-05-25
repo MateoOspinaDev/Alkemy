@@ -1,6 +1,5 @@
 package com.prototype.demo.repository;
 
-import com.prototype.demo.model.Pelicula;
 import com.prototype.demo.model.Personaje;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,6 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface PersonajeRepository extends JpaRepository<Personaje,Long> {
+
+    List<Personaje> findBypeliculasAsociadasId(Long peliculaid);
+
 
     boolean existsByNombre(String nombre);
     boolean existsByEdad(int edad);

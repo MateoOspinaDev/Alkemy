@@ -62,7 +62,7 @@ public class PersonajeController {
     ///************Por hacer/////********
     @GetMapping(params = "movies")
     public ResponseEntity<List<PersonajeSinDetalles>> obtenerPersonajesPorIdMovie(@RequestParam("movies") Long movies){
-        return ResponseEntity.status(HttpStatus.CREATED).body(iPersonajeService.getPersonajesSinDetalles());
+        return ResponseEntity.status(HttpStatus.CREATED).body(iPersonajeService.getPersonajeByIdPelicula(movies));
     }
     ///************Por hacer/////********
 

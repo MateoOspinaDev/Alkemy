@@ -5,10 +5,15 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.prototype.demo.service.IUsuarioService;
+import com.prototype.demo.service.IUsuarioServiceImp;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -25,9 +30,12 @@ import static java.util.Arrays.stream;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
-
+@AllArgsConstructor
 @Slf4j
+@Component
 public class FiltroAutorizacion extends OncePerRequestFilter {
+
+    private final IUsuarioServiceImp iUsuarioService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -45,11 +53,15 @@ public class FiltroAutorizacion extends OncePerRequestFilter {
                     JWTVerifier verifier = JWT.require(algorithm).build();//El verificador, que necesita el mismo algoritmo
                     DecodedJWT decodedJWT = verifier.verify(token);//Decodificamos el token
                     String username = decodedJWT.getSubject();
+
+
                     String[] roles = decodedJWT.getClaim("roles").asArray(String.class);//
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();   //
                     stream(roles).forEach(role -> {                                       //Obtenemos los roles y los convertimos
                         authorities.add(new SimpleGrantedAuthority(role));                //a rol de SpringSecurity
                     });
+
+
 
                     UsernamePasswordAuthenticationToken authenticationToken =//Token de autenticacion
                             new UsernamePasswordAuthenticationToken(username, null, authorities);

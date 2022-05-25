@@ -1,6 +1,5 @@
 package com.prototype.demo.service;
 
-import com.prototype.demo.model.Pelicula;
 import com.prototype.demo.model.Personaje;
 import com.prototype.demo.model.PersonajeSinDetalles;
 import com.prototype.demo.repository.PersonajeRepository;
@@ -102,7 +101,11 @@ public class IPersonajeServiceImp implements IPersonajeService {
 
     //********************Por hacer//////*********
     @Override
-    public List<Personaje> getPersonajeByIdPelicula(Long idPelicula) {
-        return null;
+    public List<PersonajeSinDetalles> getPersonajeByIdPelicula(Long idPelicula) {
+        List<Personaje> personajes =  personajeRepository.findBypeliculasAsociadasId(idPelicula);
+        List<PersonajeSinDetalles> personajeSinDetalles = new ArrayList<>();
+        personajes.forEach(personaje -> personajeSinDetalles.add(
+                new PersonajeSinDetalles(personaje.getImagen(), personaje.getNombre())));
+        return personajeSinDetalles;
     }
 }

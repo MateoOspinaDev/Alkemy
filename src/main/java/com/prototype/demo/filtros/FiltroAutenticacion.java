@@ -2,6 +2,7 @@ package com.prototype.demo.filtros;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,14 +23,12 @@ import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@Slf4j
+@Slf4j @RequiredArgsConstructor
 public class FiltroAutenticacion extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;//Vamos a usarlo para autenticar
 
-    public FiltroAutenticacion(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
+
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -48,14 +47,14 @@ public class FiltroAutenticacion extends UsernamePasswordAuthenticationFilter {
 
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes()); //Algoritmo del jwt que se usará para firmal el token de acceso y de refresco
 
-        String access_token = com.auth0.jwt.JWT.create()
+        String accessToken = com.auth0.jwt.JWT.create()
                 .withSubject(user.getUsername()) //El valor de identificacion del usuario que tomará para el token
                 .withIssuer(request.getRequestURL().toString()) //Autor del token (URL a la que se envia la peticion)
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList())) //Asignación de los roles
                 .sign(algorithm);//Firma
 
         Map<String, String> tokens = new HashMap<>();
-        tokens.put("access_token", access_token);
+        tokens.put("access_token", accessToken);
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }
