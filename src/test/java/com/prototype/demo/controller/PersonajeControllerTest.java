@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prototype.demo.DatosTest;
 import com.prototype.demo.model.Pelicula;
 import com.prototype.demo.model.Personaje;
-import com.prototype.demo.model.PersonajeSinDetalles;
+import com.prototype.demo.dtos.PersonajeSinDetallesDto;
 import com.prototype.demo.service.IPersonajeService;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
@@ -141,8 +141,8 @@ class PersonajeControllerTest {
     @WithMockUser
     @Test
     void shouldBackPersonajeByAnyValidParameter() throws Exception {
-        PersonajeSinDetalles personaje = new PersonajeSinDetalles("Adrianajpg", "Adriana");
-        List<PersonajeSinDetalles> personajeLista = DatosTest.personajeSinDetalles();
+        PersonajeSinDetallesDto personaje = new PersonajeSinDetallesDto("Adrianajpg", "Adriana");
+        List<PersonajeSinDetallesDto> personajeLista = DatosTest.personajeSinDetalles();
 
         when(iPersonajeService.existByNombre(anyString())).thenReturn(true);
         when(iPersonajeService.existByEdad(anyInt())).thenReturn(true);

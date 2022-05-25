@@ -4,7 +4,7 @@ import com.prototype.demo.excepciones.PeliculaNotFoundException;
 import com.prototype.demo.excepciones.PersonajeNotFoundException;
 import com.prototype.demo.excepciones.RequestException;
 import com.prototype.demo.model.Pelicula;
-import com.prototype.demo.model.PeliculaSinDetalles;
+import com.prototype.demo.dtos.PeliculaSinDetallesDto;
 import com.prototype.demo.service.IPeliculaService;
 import com.prototype.demo.service.IPersonajeService;
 import lombok.AllArgsConstructor;
@@ -34,7 +34,7 @@ public class PeliculaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PeliculaSinDetalles>> obtenerPeliculasSinDetalles(){
+    public ResponseEntity<List<PeliculaSinDetallesDto>> obtenerPeliculasSinDetalles(){
         if(iPeliculaService.getPeliculasSinDetalles().isEmpty()) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         return ResponseEntity.ok().body(iPeliculaService.getPeliculasSinDetalles());
     }
@@ -69,7 +69,7 @@ public class PeliculaController {
     }
 
     @GetMapping(params = "titulo")
-    public ResponseEntity<PeliculaSinDetalles> obtenerPeliculaPorTitulo(@RequestParam("titulo") String titulo){
+    public ResponseEntity<PeliculaSinDetallesDto> obtenerPeliculaPorTitulo(@RequestParam("titulo") String titulo){
         if(!iPeliculaService.existByTitulo(titulo)){
             throw new PeliculaNotFoundException(HttpStatus.BAD_REQUEST,"EC-003","pelicula no existe o parametro de busqueda incorrecto");
         }
@@ -77,12 +77,12 @@ public class PeliculaController {
     }
 
     @GetMapping(params = "genre")
-    public ResponseEntity<List<PeliculaSinDetalles>> obtenerPeliculaPorGenero(@RequestParam("genre") Long genre){
+    public ResponseEntity<List<PeliculaSinDetallesDto>> obtenerPeliculaPorGenero(@RequestParam("genre") Long genre){
         return ResponseEntity.ok().body(iPeliculaService.findByIdGenero(genre));
     }
 
     @GetMapping(params = "order")
-    public ResponseEntity<List<PeliculaSinDetalles>> obtenerPeliculasAsc(@RequestParam("order") String order){
+    public ResponseEntity<List<PeliculaSinDetallesDto>> obtenerPeliculasAsc(@RequestParam("order") String order){
         if(!Objects.equals(order, "asc") && !Objects.equals(order, "desc")){
             throw new RequestException(HttpStatus.BAD_REQUEST,"EM-001","Orden ingresado no es valido");
         }

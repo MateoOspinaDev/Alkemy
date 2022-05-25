@@ -3,7 +3,7 @@ package com.prototype.demo.controller;
 import com.prototype.demo.excepciones.PersonajeNotFoundException;
 import com.prototype.demo.excepciones.RequestException;
 import com.prototype.demo.model.Personaje;
-import com.prototype.demo.model.PersonajeSinDetalles;
+import com.prototype.demo.dtos.PersonajeSinDetallesDto;
 import com.prototype.demo.service.IPersonajeService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class PersonajeController {
     private IPersonajeService iPersonajeService;
 
     @GetMapping
-    public ResponseEntity<List<PersonajeSinDetalles>> obtenerPersonajes(){
+    public ResponseEntity<List<PersonajeSinDetallesDto>> obtenerPersonajes(){
         if(iPersonajeService.getPersonajesSinDetalles().isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         return ResponseEntity.ok().body(iPersonajeService.getPersonajesSinDetalles());
     }
@@ -34,7 +34,7 @@ public class PersonajeController {
     }
 
     @GetMapping(params = "name")
-    public ResponseEntity<PersonajeSinDetalles> obtenerPersonajePorNombre(@RequestParam("name") String name){
+    public ResponseEntity<PersonajeSinDetallesDto> obtenerPersonajePorNombre(@RequestParam("name") String name){
         if(!iPersonajeService.existByNombre(name)){
             throw new PersonajeNotFoundException(HttpStatus.BAD_REQUEST,"EC-003","personaje no existe o parametro de busqueda incorrecto");
         }
@@ -43,7 +43,7 @@ public class PersonajeController {
 
 
     @GetMapping(params = "age")
-    public ResponseEntity<List<PersonajeSinDetalles>> obtenerPersonajesPorEdad(@RequestParam("age") int age){
+    public ResponseEntity<List<PersonajeSinDetallesDto>> obtenerPersonajesPorEdad(@RequestParam("age") int age){
         if(!iPersonajeService.existByEdad(age)){
             throw new PersonajeNotFoundException(HttpStatus.BAD_REQUEST,"EC-003","personaje no existe o parametro de busqueda incorrecto");
         }
@@ -51,7 +51,7 @@ public class PersonajeController {
     }
 
     @GetMapping(params = "peso")
-    public ResponseEntity<List<PersonajeSinDetalles>> obtenerPersonajesPorpeso(@RequestParam("peso") float peso){
+    public ResponseEntity<List<PersonajeSinDetallesDto>> obtenerPersonajesPorpeso(@RequestParam("peso") float peso){
         if(!iPersonajeService.existByPeso(peso)){
             throw new PersonajeNotFoundException(HttpStatus.BAD_REQUEST,"EC-003","personaje no existe o parametro de busqueda incorrecto");
         }
@@ -61,7 +61,7 @@ public class PersonajeController {
 
     ///************Por hacer/////********
     @GetMapping(params = "movies")
-    public ResponseEntity<List<PersonajeSinDetalles>> obtenerPersonajesPorIdMovie(@RequestParam("movies") Long movies){
+    public ResponseEntity<List<PersonajeSinDetallesDto>> obtenerPersonajesPorIdMovie(@RequestParam("movies") Long movies){
         return ResponseEntity.status(HttpStatus.CREATED).body(iPersonajeService.getPersonajeByIdPelicula(movies));
     }
     ///************Por hacer/////********

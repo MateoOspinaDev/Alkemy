@@ -1,4 +1,4 @@
-package com.prototype.demo.model;
+package com.prototype.demo.dtos;
 
 import lombok.*;
 
@@ -8,7 +8,7 @@ import java.sql.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PeliculaSinDetalles {
+public class PeliculaSinDetallesDto {
     private String imagen;
     private String titulo;
     private Date fechaDeCreacion;

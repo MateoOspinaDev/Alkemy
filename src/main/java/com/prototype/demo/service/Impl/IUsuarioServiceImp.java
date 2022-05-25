@@ -1,9 +1,10 @@
-package com.prototype.demo.service;
+package com.prototype.demo.service.Impl;
 
 import com.prototype.demo.model.Rol;
 import com.prototype.demo.model.Usuario;
 import com.prototype.demo.repository.RolRepository;
 import com.prototype.demo.repository.UsuarioRepository;
+import com.prototype.demo.service.IUsuarioService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +69,7 @@ public class IUsuarioServiceImp implements IUsuarioService
     public void addRolToUsuario(String username, String roleName) {
         log.info("Adding role {} to user {}", roleName, username);
         Usuario user = usuarioRepository.findByUsername(username);
-        Rol role = rolRepository.findByNombre(roleName);
+        Rol role = rolRepository.findByName(roleName);
         user.getRoles().add(role);
     }
 

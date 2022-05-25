@@ -1,4 +1,4 @@
-package com.prototype.demo.model;
+package com.prototype.demo.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonajeSinDetalles {
+public class PersonajeSinDetallesDto {
     private String imagen;
     private String nombre;
 }

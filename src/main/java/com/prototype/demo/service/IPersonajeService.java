@@ -1,7 +1,7 @@
 package com.prototype.demo.service;
 
 import com.prototype.demo.model.Personaje;
-import com.prototype.demo.model.PersonajeSinDetalles;
+import com.prototype.demo.dtos.PersonajeSinDetallesDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,15 +12,15 @@ public interface IPersonajeService {
     void deletePersonaje(Long id);
     Personaje updatePersonaje(Personaje personaje);
     boolean existById(Long id);
-    PersonajeSinDetalles getPersonajeByNombre(String nombre);
-    List<PersonajeSinDetalles> getPersonajeByPeso(float peso);
-    List<PersonajeSinDetalles> GetPersonajeByEdad(int edad);
-    List<PersonajeSinDetalles> getPersonajesSinDetalles();
+    PersonajeSinDetallesDto getPersonajeByNombre(String nombre);
+    List<PersonajeSinDetallesDto> getPersonajeByPeso(float peso);
+    List<PersonajeSinDetallesDto> GetPersonajeByEdad(int edad);
+    List<PersonajeSinDetallesDto> getPersonajesSinDetalles();
     List<Personaje> getPersonajes();
     boolean existByNombre(String nombre);
     boolean existByEdad(int edad);
     boolean existByPeso(float peso);
 
     //********************Por hacer//////*********
-    public List<PersonajeSinDetalles> getPersonajeByIdPelicula(Long idPelicula);
+    public List<PersonajeSinDetallesDto> getPersonajeByIdPelicula(Long idPelicula);
 }

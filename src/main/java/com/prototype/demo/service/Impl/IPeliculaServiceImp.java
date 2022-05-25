@@ -1,10 +1,11 @@
-package com.prototype.demo.service;
+package com.prototype.demo.service.Impl;
 
 import com.prototype.demo.model.Pelicula;
-import com.prototype.demo.model.PeliculaSinDetalles;
+import com.prototype.demo.dtos.PeliculaSinDetallesDto;
 import com.prototype.demo.model.Personaje;
 import com.prototype.demo.repository.PeliculaRepository;
 import com.prototype.demo.repository.PersonajeRepository;
+import com.prototype.demo.service.IPeliculaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -95,48 +96,48 @@ public class IPeliculaServiceImp implements IPeliculaService {
 
 
     @Override
-    public List<PeliculaSinDetalles> getOrderByDate(String order) {
+    public List<PeliculaSinDetallesDto> getOrderByDate(String order) {
         if(Objects.equals(order, "asc")) {
             List<Pelicula> peliculas = peliculaRepository.findAllOrderByFechaDeCreacionAsc();
-            List<PeliculaSinDetalles> peliculaSinDetalles = new ArrayList<>();
-            peliculas.forEach(pelicula -> peliculaSinDetalles.add(
-                    new PeliculaSinDetalles(pelicula.getImagen(), pelicula.getTitulo(),pelicula.getFechaDeCreacion())));
-            return peliculaSinDetalles;
+            List<PeliculaSinDetallesDto> peliculaSinDetalleDtos = new ArrayList<>();
+            peliculas.forEach(pelicula -> peliculaSinDetalleDtos.add(
+                    new PeliculaSinDetallesDto(pelicula.getImagen(), pelicula.getTitulo(),pelicula.getFechaDeCreacion())));
+            return peliculaSinDetalleDtos;
         }
         else if(Objects.equals(order, "desc")) {
             List<Pelicula> peliculas = peliculaRepository.findAllOrderByFechaDeCreacionDesc();
-            List<PeliculaSinDetalles> peliculaSinDetalles = new ArrayList<>();
-            peliculas.forEach(pelicula -> peliculaSinDetalles.add(
-                    new PeliculaSinDetalles(pelicula.getImagen(), pelicula.getTitulo(),pelicula.getFechaDeCreacion())));
-            return peliculaSinDetalles;
+            List<PeliculaSinDetallesDto> peliculaSinDetalleDtos = new ArrayList<>();
+            peliculas.forEach(pelicula -> peliculaSinDetalleDtos.add(
+                    new PeliculaSinDetallesDto(pelicula.getImagen(), pelicula.getTitulo(),pelicula.getFechaDeCreacion())));
+            return peliculaSinDetalleDtos;
         }
         else return null;
     }
 
 
     @Override
-    public PeliculaSinDetalles getByTitulo(String titulo) {
+    public PeliculaSinDetallesDto getByTitulo(String titulo) {
         Pelicula pelicula = peliculaRepository.findByTitulo(titulo);
-        PeliculaSinDetalles peliculaSinDetalles = new PeliculaSinDetalles(pelicula.getImagen(),pelicula.getTitulo(),pelicula.getFechaDeCreacion());
-        return peliculaSinDetalles;
+        PeliculaSinDetallesDto peliculaSinDetallesDto = new PeliculaSinDetallesDto(pelicula.getImagen(),pelicula.getTitulo(),pelicula.getFechaDeCreacion());
+        return peliculaSinDetallesDto;
     }
 
     @Override
-    public List<PeliculaSinDetalles> findByIdGenero(Long idGenero) {
+    public List<PeliculaSinDetallesDto> findByIdGenero(Long idGenero) {
         List<Pelicula> peliculas = peliculaRepository.findByGeneroId(idGenero);
-        List<PeliculaSinDetalles> peliculaSinDetalles = new ArrayList<>();
-        peliculas.forEach(pelicula -> peliculaSinDetalles.add(
-                new PeliculaSinDetalles(pelicula.getImagen(), pelicula.getTitulo(),pelicula.getFechaDeCreacion())));
-        return peliculaSinDetalles;
+        List<PeliculaSinDetallesDto> peliculaSinDetalleDtos = new ArrayList<>();
+        peliculas.forEach(pelicula -> peliculaSinDetalleDtos.add(
+                new PeliculaSinDetallesDto(pelicula.getImagen(), pelicula.getTitulo(),pelicula.getFechaDeCreacion())));
+        return peliculaSinDetalleDtos;
     }
 
     @Override
-    public List<PeliculaSinDetalles> getPeliculasSinDetalles() {
+    public List<PeliculaSinDetallesDto> getPeliculasSinDetalles() {
         List<Pelicula> peliculas = peliculaRepository.findAll();
-        List<PeliculaSinDetalles> peliculaSinDetalles = new ArrayList<>();
-        peliculas.forEach(pelicula -> peliculaSinDetalles.add(
-                new PeliculaSinDetalles(pelicula.getImagen(), pelicula.getTitulo(),pelicula.getFechaDeCreacion())));
-        return peliculaSinDetalles;
+        List<PeliculaSinDetallesDto> peliculaSinDetalleDtos = new ArrayList<>();
+        peliculas.forEach(pelicula -> peliculaSinDetalleDtos.add(
+                new PeliculaSinDetallesDto(pelicula.getImagen(), pelicula.getTitulo(),pelicula.getFechaDeCreacion())));
+        return peliculaSinDetalleDtos;
     }
 
     public List<Pelicula> OrderMovieList(List<Pelicula> peliculas){

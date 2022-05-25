@@ -1,15 +1,12 @@
 package com.prototype.demo;
 
+import com.prototype.demo.dtos.PeliculaSinDetallesDto;
+import com.prototype.demo.dtos.PersonajeSinDetallesDto;
 import com.prototype.demo.model.*;
 
-import java.math.BigDecimal;
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 public class DatosTest {
         //Personajes:
@@ -45,12 +42,12 @@ public class DatosTest {
             return  personajes;
         }
 
-        public static List<PersonajeSinDetalles> personajeSinDetalles(){
+        public static List<PersonajeSinDetallesDto> personajeSinDetalles(){
             List<Personaje> personajes = listarPersonajes();
-            List<PersonajeSinDetalles> personajeSinDetalles = new ArrayList<>();
-            personajes.forEach(personaje -> personajeSinDetalles.add(
-                    new PersonajeSinDetalles(personaje.getImagen(), personaje.getNombre())));
-            return personajeSinDetalles;
+            List<PersonajeSinDetallesDto> personajeSinDetalleDtos = new ArrayList<>();
+            personajes.forEach(personaje -> personajeSinDetalleDtos.add(
+                    new PersonajeSinDetallesDto(personaje.getImagen(), personaje.getNombre())));
+            return personajeSinDetalleDtos;
         }
 
 
@@ -83,12 +80,12 @@ public class DatosTest {
         return  peliculas;
     }
 
-    public static List<PeliculaSinDetalles> listarPeliculasSinDetalles(){
+    public static List<PeliculaSinDetallesDto> listarPeliculasSinDetalles(){
         List<Pelicula> peliculas = listarPeliculas();
-        List<PeliculaSinDetalles> peliculaSinDetalles = new ArrayList<>();
-        peliculas.forEach(pelicula -> peliculaSinDetalles.add(
-                new PeliculaSinDetalles(pelicula.getImagen(), pelicula.getTitulo(),pelicula.getFechaDeCreacion())));
-        return peliculaSinDetalles;
+        List<PeliculaSinDetallesDto> peliculaSinDetalleDtos = new ArrayList<>();
+        peliculas.forEach(pelicula -> peliculaSinDetalleDtos.add(
+                new PeliculaSinDetallesDto(pelicula.getImagen(), pelicula.getTitulo(),pelicula.getFechaDeCreacion())));
+        return peliculaSinDetalleDtos;
     }
 
 

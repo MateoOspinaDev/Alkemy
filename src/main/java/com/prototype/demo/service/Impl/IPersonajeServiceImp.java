@@ -1,8 +1,9 @@
-package com.prototype.demo.service;
+package com.prototype.demo.service.Impl;
 
 import com.prototype.demo.model.Personaje;
-import com.prototype.demo.model.PersonajeSinDetalles;
+import com.prototype.demo.dtos.PersonajeSinDetallesDto;
 import com.prototype.demo.repository.PersonajeRepository;
+import com.prototype.demo.service.IPersonajeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,47 +66,47 @@ public class IPersonajeServiceImp implements IPersonajeService {
     }
 
     @Override
-    public PersonajeSinDetalles getPersonajeByNombre(String nombre) {
+    public PersonajeSinDetallesDto getPersonajeByNombre(String nombre) {
         Personaje personaje = personajeRepository.findByNombre(nombre);
-        return new PersonajeSinDetalles(personaje.getImagen(), personaje.getNombre());
+        return new PersonajeSinDetallesDto(personaje.getImagen(), personaje.getNombre());
     }
 
     @Override
-    public List<PersonajeSinDetalles> getPersonajeByPeso(float peso) {
+    public List<PersonajeSinDetallesDto> getPersonajeByPeso(float peso) {
         List<Personaje> personajes = personajeRepository.findByPeso(peso);
-        List<PersonajeSinDetalles> personajeSinDetalles = new ArrayList<>();
-        personajes.forEach(personaje -> personajeSinDetalles.add(
-                new PersonajeSinDetalles(personaje.getImagen(), personaje.getNombre())));
-        return personajeSinDetalles;
+        List<PersonajeSinDetallesDto> personajeSinDetalleDtos = new ArrayList<>();
+        personajes.forEach(personaje -> personajeSinDetalleDtos.add(
+                new PersonajeSinDetallesDto(personaje.getImagen(), personaje.getNombre())));
+        return personajeSinDetalleDtos;
     }
 
     @Override
-    public List<PersonajeSinDetalles> GetPersonajeByEdad(int edad) {
+    public List<PersonajeSinDetallesDto> GetPersonajeByEdad(int edad) {
         List<Personaje> personajes = personajeRepository.findByEdad(edad);
-        List<PersonajeSinDetalles> personajeSinDetalles = new ArrayList<>();
-        personajes.forEach(personaje -> personajeSinDetalles.add(
-                new PersonajeSinDetalles(personaje.getImagen(), personaje.getNombre())));
-        return personajeSinDetalles;
+        List<PersonajeSinDetallesDto> personajeSinDetalleDtos = new ArrayList<>();
+        personajes.forEach(personaje -> personajeSinDetalleDtos.add(
+                new PersonajeSinDetallesDto(personaje.getImagen(), personaje.getNombre())));
+        return personajeSinDetalleDtos;
     }
 
     @Override
-    public List<PersonajeSinDetalles> getPersonajesSinDetalles(){
+    public List<PersonajeSinDetallesDto> getPersonajesSinDetalles(){
 
         List<Personaje> personajes = personajeRepository.findAll();
-        List<PersonajeSinDetalles> personajeSinDetalles = new ArrayList<>();
-        personajes.forEach(personaje -> personajeSinDetalles.add(
-                new PersonajeSinDetalles(personaje.getImagen(), personaje.getNombre())));
-        return personajeSinDetalles;
+        List<PersonajeSinDetallesDto> personajeSinDetalleDtos = new ArrayList<>();
+        personajes.forEach(personaje -> personajeSinDetalleDtos.add(
+                new PersonajeSinDetallesDto(personaje.getImagen(), personaje.getNombre())));
+        return personajeSinDetalleDtos;
     }
 
 
     //********************Por hacer//////*********
     @Override
-    public List<PersonajeSinDetalles> getPersonajeByIdPelicula(Long idPelicula) {
+    public List<PersonajeSinDetallesDto> getPersonajeByIdPelicula(Long idPelicula) {
         List<Personaje> personajes =  personajeRepository.findBypeliculasAsociadasId(idPelicula);
-        List<PersonajeSinDetalles> personajeSinDetalles = new ArrayList<>();
-        personajes.forEach(personaje -> personajeSinDetalles.add(
-                new PersonajeSinDetalles(personaje.getImagen(), personaje.getNombre())));
-        return personajeSinDetalles;
+        List<PersonajeSinDetallesDto> personajeSinDetalleDtos = new ArrayList<>();
+        personajes.forEach(personaje -> personajeSinDetalleDtos.add(
+                new PersonajeSinDetallesDto(personaje.getImagen(), personaje.getNombre())));
+        return personajeSinDetalleDtos;
     }
 }

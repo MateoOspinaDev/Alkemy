@@ -3,7 +3,7 @@ package com.prototype.demo.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prototype.demo.DatosTest;
 import com.prototype.demo.model.Pelicula;
-import com.prototype.demo.model.PeliculaSinDetalles;
+import com.prototype.demo.dtos.PeliculaSinDetallesDto;
 import com.prototype.demo.model.Personaje;
 import com.prototype.demo.service.IPeliculaService;
 import org.junit.Before;
@@ -98,7 +98,7 @@ class PeliculaControllerTest {
     @WithMockUser
     @Test
     void shouldReturnNoContentInPeliculasSinDetalles() throws Exception {
-        when(iPeliculaService.getPeliculasSinDetalles()).thenReturn(new ArrayList<PeliculaSinDetalles>());
+        when(iPeliculaService.getPeliculasSinDetalles()).thenReturn(new ArrayList<PeliculaSinDetallesDto>());
 
         mockMvc.perform(get("/movies").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
@@ -176,9 +176,9 @@ class PeliculaControllerTest {
     @WithMockUser
     @Test
     void shouldReturnPeliculaByTitulo() throws Exception {
-        PeliculaSinDetalles peliculaSinDetalles = new PeliculaSinDetalles("Adrianajpg", "Adriana",new Date(25-12-1990));
+        PeliculaSinDetallesDto peliculaSinDetallesDto = new PeliculaSinDetallesDto("Adrianajpg", "Adriana",new Date(25-12-1990));
         when(iPeliculaService.existByTitulo(anyString())).thenReturn(true);
-        when(iPeliculaService.getByTitulo("Adriana")).thenReturn(peliculaSinDetalles);
+        when(iPeliculaService.getByTitulo("Adriana")).thenReturn(peliculaSinDetallesDto);
         mockMvc.perform(get("/movies?titulo=Adriana").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.titulo").value("Adriana"));
@@ -188,9 +188,9 @@ class PeliculaControllerTest {
     @WithMockUser
     @Test
     void shouldReturnBadRequestInPeliculaByTituloBecauseMovieNoExist() throws Exception {
-        PeliculaSinDetalles peliculaSinDetalles = new PeliculaSinDetalles("Adrianajpg", "Adriana",new Date(25-12-1990));
+        PeliculaSinDetallesDto peliculaSinDetallesDto = new PeliculaSinDetallesDto("Adrianajpg", "Adriana",new Date(25-12-1990));
         when(iPeliculaService.existByTitulo(anyString())).thenReturn(false);
-        when(iPeliculaService.getByTitulo("Adriana")).thenReturn(peliculaSinDetalles);
+        when(iPeliculaService.getByTitulo("Adriana")).thenReturn(peliculaSinDetallesDto);
         mockMvc.perform(get("/movies?titulo=Adriana").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("pelicula no existe o parametro de busqueda incorrecto"));
