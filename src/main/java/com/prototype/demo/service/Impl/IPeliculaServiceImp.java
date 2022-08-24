@@ -6,19 +6,22 @@ import com.prototype.demo.model.Personaje;
 import com.prototype.demo.repository.PeliculaRepository;
 import com.prototype.demo.repository.PersonajeRepository;
 import com.prototype.demo.service.IPeliculaService;
+import com.prototype.demo.utilerias.mappers.PeliculaMappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class IPeliculaServiceImp implements IPeliculaService {
+
+    private final PeliculaMappers peliculaMappers;
 
     @Autowired
     private final PeliculaRepository peliculaRepository;
@@ -71,45 +74,31 @@ public class IPeliculaServiceImp implements IPeliculaService {
 
     @Override
     public void addPersonajeToPelicula(Long idPelicula, Long idPersonaje) {
-        //if (peliculaRepository.existByTitulo(pelicula.getTitulo())){
-        if (peliculaRepository.existsById(idPelicula)){
-            if (personajeRepository.existsById(idPersonaje)){
+        if (peliculaRepository.existsById(idPelicula)&&personajeRepository.existsById(idPersonaje)){
                 Pelicula pelicula1 = peliculaRepository.findById(idPelicula).get();
                 Personaje personaje1 = personajeRepository.findById(idPersonaje).get();
                 pelicula1.getPersonajesAsociados().add(personaje1);
-            }
         }
     }
 
     @Override
     public void deletePersonajeToPelicula(Long idPelicula, Long idPersonaje){
-        if (peliculaRepository.existsById(idPelicula)){
-            if (personajeRepository.existsById(idPersonaje)){
+        if (peliculaRepository.existsById(idPelicula) && personajeRepository.existsById(idPersonaje)){
                 Pelicula pelicula1 = peliculaRepository.findById(idPelicula).get();
                 Personaje personaje1 = personajeRepository.findById(idPersonaje).get();
                 pelicula1.getPersonajesAsociados().remove(personaje1);
-            }
         }
-
     }
-
-
 
     @Override
     public List<PeliculaSinDetallesDto> getOrderByDate(String order) {
         if(Objects.equals(order, "asc")) {
             List<Pelicula> peliculas = peliculaRepository.findAllOrderByFechaDeCreacionAsc();
-            List<PeliculaSinDetallesDto> peliculaSinDetalleDtos = new ArrayList<>();
-            peliculas.forEach(pelicula -> peliculaSinDetalleDtos.add(
-                    new PeliculaSinDetallesDto(pelicula.getImagen(), pelicula.getTitulo(),pelicula.getFechaDeCreacion())));
-            return peliculaSinDetalleDtos;
+            return peliculas.stream().map((peliculaMappers::PeliculaToPeliculaSinDetallesDto)).collect(Collectors.toList());
         }
         else if(Objects.equals(order, "desc")) {
             List<Pelicula> peliculas = peliculaRepository.findAllOrderByFechaDeCreacionDesc();
-            List<PeliculaSinDetallesDto> peliculaSinDetalleDtos = new ArrayList<>();
-            peliculas.forEach(pelicula -> peliculaSinDetalleDtos.add(
-                    new PeliculaSinDetallesDto(pelicula.getImagen(), pelicula.getTitulo(),pelicula.getFechaDeCreacion())));
-            return peliculaSinDetalleDtos;
+            return peliculas.stream().map((peliculaMappers::PeliculaToPeliculaSinDetallesDto)).collect(Collectors.toList());
         }
         else return null;
     }
@@ -118,26 +107,21 @@ public class IPeliculaServiceImp implements IPeliculaService {
     @Override
     public PeliculaSinDetallesDto getByTitulo(String titulo) {
         Pelicula pelicula = peliculaRepository.findByTitulo(titulo);
-        PeliculaSinDetallesDto peliculaSinDetallesDto = new PeliculaSinDetallesDto(pelicula.getImagen(),pelicula.getTitulo(),pelicula.getFechaDeCreacion());
-        return peliculaSinDetallesDto;
+        return peliculaMappers.PeliculaToPeliculaSinDetallesDto(pelicula);
     }
 
     @Override
     public List<PeliculaSinDetallesDto> findByIdGenero(Long idGenero) {
         List<Pelicula> peliculas = peliculaRepository.findByGeneroId(idGenero);
-        List<PeliculaSinDetallesDto> peliculaSinDetalleDtos = new ArrayList<>();
-        peliculas.forEach(pelicula -> peliculaSinDetalleDtos.add(
-                new PeliculaSinDetallesDto(pelicula.getImagen(), pelicula.getTitulo(),pelicula.getFechaDeCreacion())));
-        return peliculaSinDetalleDtos;
+        return peliculas.stream().map((peliculaMappers::PeliculaToPeliculaSinDetallesDto)).collect(Collectors.toList());
+
     }
 
     @Override
     public List<PeliculaSinDetallesDto> getPeliculasSinDetalles() {
         List<Pelicula> peliculas = peliculaRepository.findAll();
-        List<PeliculaSinDetallesDto> peliculaSinDetalleDtos = new ArrayList<>();
-        peliculas.forEach(pelicula -> peliculaSinDetalleDtos.add(
-                new PeliculaSinDetallesDto(pelicula.getImagen(), pelicula.getTitulo(),pelicula.getFechaDeCreacion())));
-        return peliculaSinDetalleDtos;
+        return peliculas.stream().map((peliculaMappers::PeliculaToPeliculaSinDetallesDto)).collect(Collectors.toList());
+
     }
 
     public List<Pelicula> OrderMovieList(List<Pelicula> peliculas){

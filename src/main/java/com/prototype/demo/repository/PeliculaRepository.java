@@ -23,8 +23,10 @@ public interface PeliculaRepository extends JpaRepository<Pelicula,Long> {
     List<Pelicula> findByGeneroId(Long generoId);
 
     @Modifying
-    @Query(value ="UPDATE pelicula u set calificacion=?1, fecha_de_creacion=?2, imagen=?3, titulo=?4, genero_id=?5  where u.id = ?6 ", nativeQuery = true)
-    void updatePelicula(float calificacion, Date fecha_de_creacion, String imagen, String titulo, Long genero_id, Long id);
+    @Query(value ="UPDATE pelicula u set calificacion=?1, fecha_de_creacion=?2," +
+            " imagen=?3, titulo=?4, genero_id=?5  where u.id = ?6 ", nativeQuery = true)
+    void updatePelicula(float calificacion, Date fecha_de_creacion, String imagen,
+                        String titulo, Long genero_id, Long id);
 
     @Query(value = "SELECT * FROM pelicula u order by fecha_de_creacion ASC",nativeQuery = true)
     List<Pelicula> findAllOrderByFechaDeCreacionAsc();
