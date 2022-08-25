@@ -14,14 +14,11 @@ public class MoviesAppApplication {
 	}
 
 	@Bean
-		//
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
-	//Test de las funciones de la aplicación
 //	@Bean
-////Debe ser bean para que springboot lo tome como parte de la app
 //	CommandLineRunner run(UsuarioService usuarioService) {
 //		return args -> {
 //			usuarioService.saveRol(new Rol(null, "ROLE_USER"));

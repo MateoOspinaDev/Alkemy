@@ -4,7 +4,7 @@ import com.prototype.demo.model.Personaje;
 import com.prototype.demo.dtos.PersonajeSinDetallesDto;
 import com.prototype.demo.repository.PersonajeRepository;
 import com.prototype.demo.service.IPersonajeService;
-import com.prototype.demo.utilerias.mappers.PersonajeMappers;
+import com.prototype.demo.utils.mappers.PersonajeMappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -90,8 +90,6 @@ public class IPersonajeServiceImp implements IPersonajeService {
         return personajes.stream().map(personajeMappers::PersonajeToPersonajeSinDetallesDto).collect(Collectors.toList());
     }
 
-
-    //********************Por hacer//////*********
     @Override
     public List<PersonajeSinDetallesDto> getPersonajeByIdPelicula(Long idPelicula) {
         List<Personaje> personajes =  personajeRepository.findBypeliculasAsociadasId(idPelicula);

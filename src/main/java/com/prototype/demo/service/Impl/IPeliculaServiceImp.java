@@ -6,7 +6,7 @@ import com.prototype.demo.model.Personaje;
 import com.prototype.demo.repository.PeliculaRepository;
 import com.prototype.demo.repository.PersonajeRepository;
 import com.prototype.demo.service.IPeliculaService;
-import com.prototype.demo.utilerias.mappers.PeliculaMappers;
+import com.prototype.demo.utils.mappers.PeliculaMappers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

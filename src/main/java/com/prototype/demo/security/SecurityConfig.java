@@ -35,13 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         filtroAutenticacion.setFilterProcessesUrl("/api/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-
         http.authorizeRequests().antMatchers("/api/login/**","/auth/registrar").permitAll();//Para las rutas que no queremos asegurar
-
         http.authorizeRequests().anyRequest().hasAnyAuthority("ROLE_USER"); //Deben estar autenticados
-
         http.addFilter(filtroAutenticacion);
-
         http.addFilterBefore(filtroAutorizacion, UsernamePasswordAuthenticationFilter.class);
     }
 

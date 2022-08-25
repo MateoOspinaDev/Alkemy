@@ -3,13 +3,12 @@ package com.prototype.demo.controller;
 import com.prototype.demo.excepciones.RequestException;
 import com.prototype.demo.model.Usuario;
 import com.prototype.demo.service.IUsuarioService;
+import com.prototype.demo.utils.emailService.MailService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +26,7 @@ public class AuthController {
     private IUsuarioService IUsuarioService;
 
     @Autowired
-    JavaMailSender javaMailSender;
+    private MailService mailService;
 
     @PostMapping("/registrar")
     public ResponseEntity<Usuario> saveUser(@RequestBody Usuario usuario) {
@@ -38,13 +37,11 @@ public class AuthController {
             throw new RequestException(HttpStatus.BAD_REQUEST,"UC-001","Correo ingresado ya está registrado");
         }
 
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setTo(usuario.getUsername());
-        email.setSubject("Correo de bienvenida");
-        email.setText("" +
+        String subject ="Correo de bienvenida";
+        String body = "" +
                 "" +
-                "Bienvenido a la plataforma de peliculas y series de Disney. Esperamos que su camino con nosotros sea el que esperaba");
-        javaMailSender.send(email);
+                "Bienvenido a la plataforma de peliculas y series. Esperamos que su camino con nosotros sea el que esperaba";
+        mailService.sendMail(usuario.getUsername(),subject,body);
 
         IUsuarioService.saveUsuario(usuario);
         IUsuarioService.addRolToUsuario(usuario.getUsername(),"ROLE_USER");

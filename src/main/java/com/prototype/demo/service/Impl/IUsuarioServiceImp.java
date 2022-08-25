@@ -46,7 +46,7 @@ public class IUsuarioServiceImp implements IUsuarioService
             log.info("User found in the database: {}", username);
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
             user.getRoles().forEach(role -> { //ASignamos los roles del usuario a la coleccion de roles del usuario de SpringSecurity
-                authorities.add(new SimpleGrantedAuthority(role.getName()));//convertimos cada nombre de rol en un rol de SpSecurity
+                authorities.add(new SimpleGrantedAuthority(role.getNombre()));//convertimos cada nombre de rol en un rol de SpSecurity
             });
             return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
         }
@@ -61,7 +61,7 @@ public class IUsuarioServiceImp implements IUsuarioService
 
     @Override
     public Rol saveRol(Rol role) {
-        log.info("Saving new role {} to the database", role.getName());
+        log.info("Saving new role {} to the database", role.getNombre());
         return rolRepository.save(role);
     }
 
@@ -69,7 +69,7 @@ public class IUsuarioServiceImp implements IUsuarioService
     public void addRolToUsuario(String username, String roleName) {
         log.info("Adding role {} to user {}", roleName, username);
         Usuario user = usuarioRepository.findByUsername(username);
-        Rol role = rolRepository.findByName(roleName);
+        Rol role = rolRepository.findByNombre(roleName);
         user.getRoles().add(role);
     }
 

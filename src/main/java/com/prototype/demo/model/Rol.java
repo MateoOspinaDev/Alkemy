@@ -24,5 +24,5 @@ public class Rol {
             generator = "rol_sequence"
     )
     private Long id;
-    private String name;
+    private String nombre;
 }

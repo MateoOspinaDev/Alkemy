@@ -1,4 +1,4 @@
-package com.prototype.demo.utilerias.mappers;
+package com.prototype.demo.utils.mappers;
 
 import com.prototype.demo.dtos.PersonajeSinDetallesDto;
 import com.prototype.demo.model.Personaje;
