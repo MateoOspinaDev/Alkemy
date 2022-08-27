@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.prototype.demo.service.Impl.IUsuarioServiceImp;
+import com.prototype.demo.utils.Security.SecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,6 +35,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 public class FiltroAutorizacion extends OncePerRequestFilter {
 
     private final IUsuarioServiceImp iUsuarioService;
+    private final SecurityUtils securityUtils;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -45,26 +47,18 @@ public class FiltroAutorizacion extends OncePerRequestFilter {
             String authorizationHeader = request.getHeader(AUTHORIZATION);//Tomamos el Authorizathion del header
             if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) { //Si no es nulo y empieza con Bearer
                 try {
-
-                    String token = authorizationHeader.substring("Bearer ".length());//Eliminamos "Bearer"
-                    Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());//El mismo algoritmo de JWT
-                    JWTVerifier verifier = JWT.require(algorithm).build();//El verificador, que necesita el mismo algoritmo
-                    DecodedJWT decodedJWT = verifier.verify(token);//Decodificamos el token
-                    String username = decodedJWT.getSubject();
-
-
+                    DecodedJWT decodedJWT = securityUtils.getDecodeJWT(authorizationHeader); //Obtenemos el token y lo decodificamos
+                    String username = securityUtils.getSubjectOfJWT(decodedJWT); //Obtenemos el subject del token
                     String[] roles = decodedJWT.getClaim("roles").asArray(String.class);//
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();   //
                     stream(roles).forEach(role -> {                                       //Obtenemos los roles y los convertimos
                         authorities.add(new SimpleGrantedAuthority(role));                //a rol de SpringSecurity
                     });
-
-
-
                     UsernamePasswordAuthenticationToken authenticationToken =//Token de autenticacion
                             new UsernamePasswordAuthenticationToken(username, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     filterChain.doFilter(request, response);//La peticion sigue su curso
+
                 }catch (Exception exception) {
                     log.error("Error logging in: {}", exception.getMessage());
                     response.setHeader("error", exception.getMessage());

@@ -2,6 +2,7 @@ package com.prototype.demo.filtros;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.prototype.demo.utils.Security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -42,17 +44,9 @@ public class FiltroAutenticacion extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
+        final SecurityUtils securityUtils=new SecurityUtils();
         User user = (User)authentication.getPrincipal(); //Usuario auntenticado que provee spring security
-
-
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes()); //Algoritmo del jwt que se usará para firmal el token de acceso y de refresco
-
-        String accessToken = com.auth0.jwt.JWT.create()
-                .withSubject(user.getUsername()) //El valor de identificacion del usuario que tomará para el token
-                .withIssuer(request.getRequestURL().toString()) //Autor del token (URL a la que se envia la peticion)
-                .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList())) //Asignación de los roles
-                .sign(algorithm);//Firma
-
+        String accessToken=securityUtils.createJWT(user,request.getRequestURL().toString());
         Map<String, String> tokens = new HashMap<>();
         tokens.put("access_token", accessToken);
         response.setContentType(APPLICATION_JSON_VALUE);
